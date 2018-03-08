@@ -116,3 +116,4 @@ Reference:
 
 https://cwiki.apache.org/confluence/display/AMBARI/Modify+configurations
 https://gist.github.com/glinmac/d9b1ce2e47dfbac6ad17
+https://github.com/apache/ambari/blob/trunk/ambari-server/docs/api/v1/index.md
