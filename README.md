@@ -1,10 +1,16 @@
 # ambari-api-work
 Using Ambari API to add new service on existing cluster and modify properties of a service
 
-## Add new service to the existing HDP2.6.4 cluster
+## Add new service to the existing 
 
-In this example, adding TEZ service to existing cluster
-Cluster name is "test"
+Below is an example to add TEZ service to the existing cluster
+
+**Versions:** HDP2.6.4 on Ambari 2.6.1
+
+**ambari-server-host:** *pavan0.field.hortonworks.com*
+
+**cluster-name:** *test*
+
 
 ##### Step 1 - Add a Service to the cluster
 ```$ curl -u <username>:<password> -i -X POST -d '{"ServiceInfo":{"service_name":"<service-name>"}}' http://<ambari-server-host>:8080/api/v1/clusters/<cluster-name>/services```
@@ -34,11 +40,14 @@ Example:
 ```$ curl -u <username>:<password> -i -X POST -d '{"type": "<config-type>", "tag": "<config-tag>", "properties" : { "key1" : "value1", "key2" : "value2", "key3" : "value3"  }}' http://<ambari-server-host>:8080/api/v1/clusters/<cluster-name>/configurations```
 
 Example:
+
 ```$ curl -u admin:admin -i -H 'X-Requested-By: ambari' -X POST -d @tez-env.json http://pavan0.field.hortonworks.com:8080/api/v1/clusters/test/configurations```
 
 ```$ curl -u admin:admin -i -H 'X-Requested-By: ambari' -X POST -d @tez-interactive-site.json http://pavan0.field.hortonworks.com:8080/api/v1/clusters/test/configurations```
 
 ```$ curl -u admin:admin -i -H 'X-Requested-By: ambari' -X POST -d @tez-site.json http://pavan0.field.hortonworks.com:8080/api/v1/clusters/test/configurations```
+
+*Note:* "type", "tag" and "properties" are already extracted to json files (tez-env.json, tez-interactive-site.json, tez-site.json) in step 3
 
 ##### Step 5 - Apply configuration to the cluster
 ```$ curl -u <username>:<password> -i -X PUT -d '{"Clusters": {"desired_configs": { "type": "<config-type>", "tag" :"<config-tag>" }}}' http://<ambari-server-host>:8080/api/v1/clusters/<cluster-name> ```
@@ -77,6 +86,11 @@ Example:
 ###### Restart all required services
 ```$ curl  -u admin:admin -H "X-Requested-By: ambari" -X POST  -d '{"RequestInfo":{"command":"RESTART","context":"Restart all required services","operation_level":"host_component"},"Requests/resource_filters":[{"hosts_predicate":"HostRoles/stale_configs=true"}]}' http://pavan0.field.hortonworks.com:8080/api/v1/clusters/test/requests```
 
+Reference: 
+
+https://cwiki.apache.org/confluence/display/AMBARI/Adding+a+New+Service+to+an+Existing+Cluster
+
+
 ## Modify Configurations
 Modifying the propertiy "yarn.timeline-service.leveldb-timeline-store.ttl-interval-ms" value to "333333" under YARN site configuration
 
@@ -100,6 +114,5 @@ Modifying the propertiy "yarn.timeline-service.leveldb-timeline-store.ttl-interv
 
 Reference: 
 
-https://cwiki.apache.org/confluence/display/AMBARI/Adding+a+New+Service+to+an+Existing+Cluster
 https://cwiki.apache.org/confluence/display/AMBARI/Modify+configurations
 https://gist.github.com/glinmac/d9b1ce2e47dfbac6ad17
